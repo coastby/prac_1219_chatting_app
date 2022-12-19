@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.LongStream;
 
-@RestController
+@Controller
 @RequestMapping("/chat")
 @Slf4j
 public class ChatController {
@@ -33,12 +33,14 @@ public class ChatController {
     }
 
     @PostMapping("/messages")
+    @ResponseBody
     public RsData<WriteMessageResponse> writeMessage(@RequestBody WriteMessageRequest request){
         ChatMessage message = new ChatMessage(request.getAuthorName(), request.getContent());
         messageList.add(message);
         return new RsData<>("S-1", "메세지가 작성되었습니다.", new WriteMessageResponse(message.getId()));
     }
     @GetMapping("/messages")
+    @ResponseBody
     public RsData<List<ChatMessage>> getMessages(@RequestParam(required = false) Long fromId){
         log.info("fromId : {}", fromId);
         long idx = -1;
@@ -57,5 +59,9 @@ public class ChatController {
                     .orElse(-1);
         }
         return new RsData<>("S-1", "성공했습니다.", messageList.subList((int) (idx+1), messageList.size()));
+    }
+    @GetMapping("/room")
+    public String showRoom(){
+        return "chat/room";
     }
 }
