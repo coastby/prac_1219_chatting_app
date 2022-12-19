@@ -48,8 +48,6 @@ public class ChatController {
                     break;
                 }
             }
-        } else {
-            return new RsData<>("S-1", "성공했습니다.", messageList);
         }
         return new RsData<>("S-1", "성공했습니다.", messageList.subList((int) (idx+1), messageList.size()));
     }
