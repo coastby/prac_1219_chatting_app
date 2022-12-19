@@ -1,10 +1,12 @@
 package com.example.app_chatting.domain;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 
 @AllArgsConstructor
+@Getter
 public class ChatMessage {
     private Long id;
     private LocalDateTime createdDate;
