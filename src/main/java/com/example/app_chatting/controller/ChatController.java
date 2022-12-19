@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.LongStream;
 
 @RestController
 @RequestMapping("/chat")
@@ -42,12 +43,18 @@ public class ChatController {
         log.info("fromId : {}", fromId);
         long idx = -1;
         if (fromId != null){
-            for (long i = messageList.size()-1; i >= 0; i--){
-                if (messageList.get((int) i).getId() <= fromId){
-                    idx = i;
-                    break;
-                }
-            }
+//            for (long i = messageList.size()-1; i >= 0; i--){
+//                if (messageList.get((int) i).getId() <= fromId){
+//                    idx = i;
+//                    break;
+//                }
+//            }
+
+            idx = LongStream.range(0, messageList.size())
+                    .map(i -> messageList.size()-1-i)
+                    .filter(i -> messageList.get((int) i).getId() <= fromId)
+                    .findFirst()
+                    .orElse(-1);
         }
         return new RsData<>("S-1", "성공했습니다.", messageList.subList((int) (idx+1), messageList.size()));
     }
